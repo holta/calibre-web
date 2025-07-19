@@ -15,10 +15,13 @@ jobs:
         run: |
           sudo mkdir /etc/iiab
           ls -ld /etc /etc/iiab
-          sudo -i
-          umask
-          pwd
           whoami
+          pwd
+          umask
+          sudo -i
+          whoami
+          pwd
+          umask
           touch /etc/iiab/TEST
           ls -l /etc/iiab/TEST
           cat > /etc/iiab/local_vars.yml << EOF
