@@ -9,9 +9,11 @@ jobs:
       - name: Clone to /opt/iiab/iiab w/ permissions 755
         run: |
           #sudo mkdir /opt/iiab
-          sudo git clone https://github.com/iiab/iiab /opt/iiab/iiab
+          sudo -i
+          pwd
+          git clone https://github.com/iiab/iiab /opt/iiab/iiab
           ls -l /opt /opt/iiab /opt/iiab/iiab
-          sudo chmod 755 /opt/iiab/iiab    # Otherwise ./iiab-install (MariaDB) fails b/c /opt/iiab/iiab world-writable -- chmod 777 is inherited from GHA runner's /opt
+          chmod 755 /opt/iiab/iiab    # Otherwise ./iiab-install (MariaDB) fails b/c /opt/iiab/iiab world-writable -- chmod 777 is inherited from GHA runner's /opt
           ls -l /opt/iiab /opt/iiab/iiab
       - name: Set up /etc/iiab/local_vars.yml
         run: |
