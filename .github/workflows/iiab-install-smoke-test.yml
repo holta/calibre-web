@@ -8,11 +8,11 @@ jobs:
     steps:
       - name: Clone to /opt/iiab/iiab w/ permissions 755
         run: |
-          sudo -i
-          pwd
-          mkdir /opt/iiab    # For removal of ACLS (drwxrwxrwx+) inherited from /opt
-          setfacl -b /opt/iiab    # Turn off ACLs, reverting to chmod UNIX permissions (preserves chmod throut tree, unlike chmod -R 777 override of 755)
-          git clone https://github.com/iiab/iiab /opt/iiab/iiab
+          sudo mkdir /opt/iiab         # For removal of ACLs (drwxrwxrwx+) inherited from runner's /opt
+          ls -ld /opt/iiab
+          sudo setfacl -b /opt/iiab    # Turn off ACLs, reverting to chmod UNIX permissions -- cleanly preserves chmod throut tree, unlike chmod -R 777 override of 755
+          ls -ld /opt/iiab
+          sudo git clone https://github.com/iiab/iiab /opt/iiab/iiab
           ls -l /opt /opt/iiab /opt/iiab/iiab
       - name: Set up /etc/iiab/local_vars.yml
         run: |
