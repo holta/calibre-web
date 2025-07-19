@@ -10,9 +10,11 @@ jobs:
         run: |
           mkdir -m 755 /opt/iiab    # Otherwise ./iiab-install (MariaDB) fails b/c /opt/iiab/iiab world-writable -- chmod 777 is inherited from GHA runner's /opt
           git clone https://github.com/iiab/iiab /opt/iiab/iiab
+          ls -ld /opt/iiab /opt/iiab/iiab
       - name: Set up /etc/iiab/local_vars.yml
         run: |
-          mkdir /etc/iiab
+          sudo mkdir /etc/iiab
+          ls -ld /etc /etc/iiab
           cat > /etc/iiab/local_vars.yml << EOF
           calibreweb_install: True
           calibreweb_enabled: True
