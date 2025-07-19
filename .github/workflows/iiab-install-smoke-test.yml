@@ -10,7 +10,7 @@ jobs:
         run: |
           sudo -i
           pwd
-          mkdir /opt/iiab
+          mkdir /opt/iiab    # For removal of ACLS (drwxrwxrwx+) inherited from /opt
           setfacl -b /opt/iiab    # Turn off ACLs, reverting to chmod UNIX permissions
           git clone https://github.com/iiab/iiab /opt/iiab/iiab
           ls -l /opt /opt/iiab /opt/iiab/iiab
@@ -20,7 +20,9 @@ jobs:
         run: |
           sudo mkdir /etc/iiab
           ls -ld /etc /etc/iiab
-          sudo cat > /etc/iiab/local_vars.yml << EOF
+          sudo -i
+          pwd
+          cat > /etc/iiab/local_vars.yml << EOF
           TEST!
           EOF
           ls -l /etc/iiab/local_vars.yml
