@@ -11,11 +11,9 @@ jobs:
           sudo -i
           pwd
           mkdir /opt/iiab    # For removal of ACLS (drwxrwxrwx+) inherited from /opt
-          setfacl -b /opt/iiab    # Turn off ACLs, reverting to chmod UNIX permissions
+          setfacl -b /opt/iiab    # Turn off ACLs, reverting to chmod UNIX permissions (preserves chmod throut tree, unlike chmod -R 777 override of 755)
           git clone https://github.com/iiab/iiab /opt/iiab/iiab
           ls -l /opt /opt/iiab /opt/iiab/iiab
-          chmod 755 /opt/iiab/iiab    # Otherwise ./iiab-install (MariaDB) fails b/c /opt/iiab/iiab world-writable -- chmod 777 is inherited from GHA runner's /opt
-          ls -l /opt/iiab /opt/iiab/iiab
       - name: Set up /etc/iiab/local_vars.yml
         run: |
           sudo mkdir /etc/iiab
