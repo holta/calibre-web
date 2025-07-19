@@ -35,7 +35,7 @@ jobs:
           admin_console_install: False
           admin_console_enabled: False
           EOF
-          mv local_vars.yml /etc/iiab
+          sudo mv local_vars.yml /etc/iiab
           ls -l /etc/iiab/local_vars.yml
           cat /etc/iiab/local_vars.yml
       - run: sudo /opt/iiab/iiab/scripts/ansible    # Install Ansible
