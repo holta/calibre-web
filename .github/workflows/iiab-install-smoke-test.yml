@@ -20,9 +20,12 @@ jobs:
           umask
           sudo touch /etc/iiab/TEST
           ls -l /etc/iiab/TEST
-          sudo echo JK > /etc/iiab/TEST2
-          cat /etc/iiab/TEST2
-          ls -l /etc/iiab/TEST2
+          echo JK > TEST2
+          cat TEST2
+          ls -l TEST2
+          sudo echo JK > /etc/iiab/TEST3
+          cat /etc/iiab/TEST3
+          ls -l /etc/iiab/TEST4
           sudo cat > /etc/iiab/local_vars.yml << EOF
           TEST!
           EOF
