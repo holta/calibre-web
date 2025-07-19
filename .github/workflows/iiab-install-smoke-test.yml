@@ -1,0 +1,40 @@
+name: 'Calibre-Web Smoke test with IIAB install'
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  test-install:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Clone to /opt/iiab/iiab w/ permissions 755
+        run: |
+          mkdir -n 755 /opt/iiab    # Otherwise ./iiab-install (MariaDB) fails b/c /opt/iiab/iiab world-writable -- chmod 777 is inherited from GHA runner's /opt
+          git clone https://github.com/iiab/iiab /opt/iiab/iiab
+      - name: Set up /etc/iiab/local_vars.yml
+        run: |
+          mkdir /etc/iiab
+          cat > /etc/iiab/local_vars.yml << EOF
+          calibreweb_install: True
+          calibreweb_enabled: True
+          calibreweb_repo_url: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
+          calibreweb_version: $GITHUB_REF_NAME
+          nodocs: True
+          kolibri_install: False
+          kolibri_enabled: False
+          kiwix_install: False
+          kiwix_enabled: False
+          osm_vector_maps_install: False
+          awstats_install: False
+          awstats_enabled: False
+          matomo_install: False
+          matomo_enabled: False
+          captiveportal_install: False
+          network_install: False
+          network_enabled: False
+          admin_console_install: False
+          admin_console_enabled: False
+          EOF
+          cat /etc/iiab/local_vars.yml
+      - run: sudo /opt/iiab/iiab/scripts/ansible    # Install Ansible
+      - run: sudo ./iiab-install                    # Install IIAB Calibre-Web!
+        working-directory: /opt/iiab/iiab
