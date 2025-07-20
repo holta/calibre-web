@@ -6,12 +6,18 @@ jobs:
   test-install:
     runs-on: ubuntu-24.04
     steps:
-      - name: Turn off ACLs in /opt/iiab, for clean clone to /opt/iiab/iiab (chmod permissions preserved)
+      - name: Clean clone to /opt/iiab/iiab (chmod permissions preserved), after turning off ACLs in /opt/iiab
         run: |
-          sudo mkdir /opt/iiab         # Not needed by git clone, but allows for setfacl removal of ACLs (drwxrwxrwx+) inherited from runner's /opt
-          sudo setfacl -b /opt/iiab    # Turn off ACLs, reverting to chmod UNIX permissions -- to cleanly preserve chmod throut tree (unlike chmod -R 755 override of 777)
-          sudo git clone https://github.com/iiab/iiab /opt/iiab/iiab
-      - name: Set up /etc/iiab/local_vars.yml
+          #sudo mkdir /opt/iiab         # Not needed by git clone, but allows for setfacl removal of ACLs (drwxrwxrwx+) inherited from runner's /opt
+          #sudo setfacl -b /opt/iiab    # Turn off ACLs, reverting to chmod UNIX permissions -- to cleanly preserve chmod throut tree (unlike chmod -R 755 override of 777)
+          #sudo git clone https://github.com/iiab/iiab /opt/iiab/iiab
+          pwd
+          ls -l
+          sudo git clone https://github.com/iiab/iiab    # in $GITHUB_WORKSPACE == /home/runner/work/calibre-web/calibre-web
+          sudo mkdir /opt/iiab
+          sudo mv iiab /opt/iiab
+          ls -l /opt /opt/iiab /opt/iiab/iiab
+      - name: Set up /etc/iiab/local_vars.yml equiv to local_vars_unittest.yml + Calibre-Web
         run: |
           sudo cat > local_vars.yml << EOF    # in $GITHUB_WORKSPACE == /home/runner/work/calibre-web/calibre-web
           calibreweb_install: True
@@ -34,11 +40,9 @@ jobs:
           admin_console_install: False
           admin_console_enabled: False
           EOF
-          sudo chown root:root local_vars.yml    # Optional, to override runner:docker
           sudo mkdir /etc/iiab
           sudo mv local_vars.yml /etc/iiab
-          ls -l /etc/iiab/local_vars.yml
-          cat /etc/iiab/local_vars.yml
+          sudo chown root:root /etc/iiab/local_vars.yml    # Optional, to override runner:docker
       - run: sudo /opt/iiab/iiab/scripts/ansible    # Install Ansible
       - run: sudo ./iiab-install                    # Install IIAB Calibre-Web!
         working-directory: /opt/iiab/iiab
