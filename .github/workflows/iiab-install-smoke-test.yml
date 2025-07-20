@@ -16,7 +16,7 @@ jobs:
           sudo git clone https://github.com/iiab/iiab    # in $GITHUB_WORKSPACE == /home/runner/work/calibre-web/calibre-web
           sudo mkdir /opt/iiab
           sudo mv iiab /opt/iiab
-          ls -l /opt /opt/iiab /opt/iiab/iiab
+          ls -l / /opt /opt/iiab /opt/iiab/iiab
       - name: Set up /etc/iiab/local_vars.yml equiv to local_vars_unittest.yml + Calibre-Web
         run: |
           sudo cat > local_vars.yml << EOF    # in $GITHUB_WORKSPACE == /home/runner/work/calibre-web/calibre-web
