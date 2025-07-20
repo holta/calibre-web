@@ -13,8 +13,7 @@ jobs:
           sudo git clone https://github.com/iiab/iiab /opt/iiab/iiab
       - name: Set up /etc/iiab/local_vars.yml
         run: |
-          sudo mkdir /etc/iiab
-          sudo cat > local_vars.yml << EOF
+          sudo cat > local_vars.yml << EOF    # in $GITHUB_WORKSPACE == /home/runner/work/calibre-web/calibre-web
           calibreweb_install: True
           calibreweb_enabled: True
           calibreweb_repo_url: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
@@ -35,6 +34,8 @@ jobs:
           admin_console_install: False
           admin_console_enabled: False
           EOF
+          sudo chown root:root local_vars.yml    # Optional, to override runner:docker
+          sudo mkdir /etc/iiab
           sudo mv local_vars.yml /etc/iiab
           ls -l /etc/iiab/local_vars.yml
           cat /etc/iiab/local_vars.yml
